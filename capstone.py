@@ -29,15 +29,19 @@ def choose():
 			if choice=='dish':
 					print "in the if."
 					url=get_search_url(recipe=item) #determine correct url
+					print url
 					results_json=requests.get(url) #get json from yummly
+					print results_json.text[:50]
 					recipes=pull_recipes(results_json.text) #pull apart recipes
+					print "Recipes Zero:", recipes[0]
 					ingr,recipes['appr']=analyze_recipes(recipes) #analyse ingredients
+					print "Recipes appr: ", recipes['appr']
 					div_stats=recipe_stats(recipes,item,ingr)
 					div_bets=bets(ingr)
 					script_diff_conf,div_diff_conf=diff_by_conf_plot(ingr,item) #produce the correct graph
 					script_AbD,div_AbD=AVG_by_diff_plot(ingr,item)
 					table_div=ingr_table(ingr)
-					return render_template('dish.html', ingr=item)#, div_conf=div_diff_conf,script_conf=script_diff_conf,div_stats=div_stats,div_bets=div_bets,table_div=table_div,script_AbD=script_AbD,div_AbD=div_AbD)
+					return render_template('dish.html', ingr=item, div_conf=div_diff_conf,script_conf=script_diff_conf,div_stats=div_stats,div_bets=div_bets,table_div=table_div,script_AbD=script_AbD,div_AbD=div_AbD)
 			# elif (choice=='ingr'):
 		# 		return render_template('ingr.html', dish=item)
 		# 	else:
