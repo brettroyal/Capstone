@@ -1,6 +1,6 @@
 <html>
 <head>
-  
+
 <link
     href="http://cdn.pydata.org/bokeh/release/bokeh-0.12.6.min.css"
     rel="stylesheet" type="text/css">
@@ -10,12 +10,9 @@
 
 <script src="http://cdn.pydata.org/bokeh/release/bokeh-0.12.6.min.js"></script>
 <script src="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.6.min.js"></script>
-<!--<script src="/Scripts/sorttable.js"></script>
 
-<script src={{ url_for('static',filename='sorttable.js')}}>-->
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='style.css')}}">
 
-<link rel=stylesheet type=text/css href={{ url_for('static',filename='style.css')}}>
-  
 
 <title>Maximizing Taste.</title>
 
@@ -33,9 +30,9 @@
         </form>
       </div>
     </td>
-  <td width="800" class="whatever">
-{% if ingr %}
+{% if dish %}
 
+<td width="800" class="whatever">
 {{div_stats|safe}}
 </td>
 <tr>
@@ -57,9 +54,6 @@
 <tr><td></td><td class="whatever">
 {{table_div|safe}}
 </td>
-</tr>
-</table>
-
 
 
 {% else %}
@@ -67,5 +61,11 @@
   <h1>Enter a dish or ingredient in the box to the left.</h1>
 </div>
 {% endif %}
+
+</tr>
+</table>
+
+<script src="{{ url_for('static',filename='sorttable.js')}}" type="text/javascript"></script>
+
 </body>
 </html>
