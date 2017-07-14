@@ -19,9 +19,13 @@ def index():
 def choose():
 		#print "got here."
 		if request.method == 'POST':
+			print "line 22"
 			choice=request.form['choice']
+			print "line24"
 			item=request.form['food']
+			print "line 26"
 			if choice=='dish':
+					print "in the if."
 		# 		# url=get_search_url(recipe=item) #determine correct url
 		# 		# results_json=requests.get(url) #get json from yummly
 		# 		# recipes=pull_recipes(results_json.text) #pull apart recipes
