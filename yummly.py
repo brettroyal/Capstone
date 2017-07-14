@@ -128,11 +128,11 @@ def print_ingredients_somehow(ingr):
     sort_diff=sorted(ingr, key=lambda x: (ingr[x]['diff']))
 
     for thing in sort_diff:
-        print ingr[thing]['CONF'], ingr[thing]['apprRATE'], thing, ingr[thing]['diff'] ,ingr[thing]['AVG']
+        #print ingr[thing]['CONF'], ingr[thing]['apprRATE'], thing, ingr[thing]['diff'] ,ingr[thing]['AVG']
         #print thing , " changes the rating by %02.2f"%(ingr[thing]['diff']*100), " with a confidence rating of %02.2f"%(ingr[thing]['CONF']*100)
 
-    print recipes['AVG']
-    print recipes['COUNT']
+    #print recipes['AVG']
+    #print recipes['COUNT']
 
     return
 
