@@ -6,7 +6,6 @@
 
 import urllib2
 import requests
-import ast
 import json
 import pprint
 import numpy as np
