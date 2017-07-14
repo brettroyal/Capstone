@@ -49,13 +49,13 @@ def choose():
 
 @app.route('/ingredient/<ingr>/',methods=['GET','POST'])
 def ingredient(ingr=None):
-		print "Ingredient function"
-  	return render_template('ingr.html', ingr=ingr)
+	print "Ingredient function"
+	return render_template('ingr.html', ingr=ingr)
 
 @app.route('/dish/<dish>/',methods=['GET','POST'])
 def dish(dish=None):
-		print "Dish function"
-  	return render_template('dish.html', dish=dish)
+	print "Dish function"
+	return render_template('dish.html', dish=dish)
 
 if __name__ == '__main__':
     app.run(debug=True)
