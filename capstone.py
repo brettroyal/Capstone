@@ -17,7 +17,7 @@ def index():
 
 @app.route('/choose/',methods=['GET','POST'])
 def choose():
-		print "got here."
+		#print "got here."
 		if request.method == 'POST':
 			choice=request.form['choice']
 			item=request.form['food']
