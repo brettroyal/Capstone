@@ -22,7 +22,7 @@ key='d5a953efaeeb4f854defde290177c340'
 auth_string='_app_id='+app_id+'&_app_key='+key
 ingr='lemon'
 recipe='key lime pie'
-recipe.replace(recipe,' ','%20')
+recipe.replace(' ','%20')
 pp = pprint.PrettyPrinter(indent=4)
 
 
