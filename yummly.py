@@ -69,11 +69,15 @@ def pull_recipes(the_json): #receives a json, returns a dictionary of recipes
         this_recipe['title']=this_entry['recipeName']
         this_recipe['rating']=this_entry['rating']
         this_recipe['ingredients']=this_entry['ingredients']
-        print "Assigned three dictionary entries"
         recipes[this_entry['id']]=this_recipe
         ingr_count+=len(this_recipe['ingredients'])
         count+=1
         running_total+=this_entry['rating']
+        if ingr_count==300:
+            print "Assigned three dictionary entries"
+            print "Running total is ", running_total
+            print "Count is ", count
+
     recipes['AVG']=float(running_total)/count
     recipes['COUNT']=(count)
     recipes['INGRS']=ingr_count/count
@@ -86,6 +90,7 @@ def pull_recipes(the_json): #receives a json, returns a dictionary of recipes
 
 def analyze_recipes(recipes): #gets a dict of recipes, returns a dict of ingredients
     all_ingredients={}
+    print "Analyze recipes got called"
     for recipe in recipes:
         if recipe not in ['AVG','COUNT','INGRS']:
             ingr_list=recipes[recipe]['ingredients']
@@ -94,6 +99,7 @@ def analyze_recipes(recipes): #gets a dict of recipes, returns a dict of ingredi
                     all_ingredients[ingredient]=[recipes[recipe]['rating']]
                 else:
                     all_ingredients[ingredient].append(recipes[recipe]['rating'])
+    print "The latest recipe was ", recipe
     avg_value={}
     appr_count=0
     for ingr in all_ingredients:
@@ -105,14 +111,14 @@ def analyze_recipes(recipes): #gets a dict of recipes, returns a dict of ingredi
             avg_value[ingr]['diff']=(avg_value[ingr]['AVG']-avg_value[ingr]['sansAVG'])/avg_value[ingr]['AVG']
         except:
             avg_value[ingr]['diff']=(avg_value[ingr]['AVG']-avg_value[ingr]['sansAVG'])/(avg_value[ingr]['AVG']+1)
-        
+    
        
         avg_value[ingr]['apprRATE']=avg_value[ingr]['COUNT'] /float(len(recipes)-2) #how many ingr its in/how many recs there are
         appr_count+=avg_value[ingr]['apprRATE'] #this appears in 10, previous ore was in 15. when we divide this by #ingr!
         #print ingr, "'s app_rate is", avg_value[ingr]['COUNT'], "/ ", len(recipes)-2, "= ", avg_value[ingr]['apprRATE']
         #print "now apprcount is ", appr_count
         #that actually appears to be correct.
-
+    print "The last ingredient was ", ingr    
     appr_avg=appr_count/float(len(all_ingredients)) #this is how many ingre*recipes /total distinct ingr
     #print appr_count , "was probably like 6000"
     #print appr_avg , " is the appr avg, which might be right  now."
