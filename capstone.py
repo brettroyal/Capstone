@@ -13,6 +13,7 @@ def bokeh_practice():
 @app.route('/',methods=['GET','POST'])
 
 def index():
+		print "index got called here."
 		return render_template('index.html')
 
 @app.route('/choose/',methods=['GET','POST'])
@@ -24,6 +25,7 @@ def choose():
 			print "line24"
 			item=request.form['food']
 			print "line 26"
+			print "The choice was ", choice, "and item was ", item
 			if choice=='dish':
 					print "in the if."
 					url=get_search_url(recipe=item) #determine correct url
@@ -47,10 +49,12 @@ def choose():
 
 @app.route('/ingredient/<ingr>/',methods=['GET','POST'])
 def ingredient(ingr=None):
+		print "Ingredient function"
     return render_template('ingr.html', ingr=ingr)
 
 @app.route('/dish/<dish>/',methods=['GET','POST'])
 def dish(dish=None):
+		print "Dish function"
     return render_template('dish.html', dish=dish)
 
 if __name__ == '__main__':
