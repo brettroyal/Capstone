@@ -4,7 +4,6 @@
 # In[1]:
 
 
-import urllib2
 import requests
 import json
 import pprint
