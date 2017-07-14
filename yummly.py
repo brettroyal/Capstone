@@ -64,7 +64,7 @@ def pull_recipes(the_json): #receives a json, returns a dictionary of recipes
     ingr_count=0.0
     for this_entry in data['matches']:
         if ingr_count==0.0:
-            print "Entered the for loop"
+            print "Entered the for loop: ", this_entry
         this_recipe={}
         this_recipe['title']=this_entry['recipeName']
         this_recipe['rating']=this_entry['rating']
