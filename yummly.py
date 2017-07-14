@@ -57,15 +57,19 @@ def get_search_url(recipe=False,ingr=False,max=500):
 
 def pull_recipes(the_json): #receives a json, returns a dictionary of recipes
     data = json.loads(the_json)
+    print "data got loaded"
     recipes={}
     count=0
     running_total=0
     ingr_count=0.0
     for this_entry in data['matches']:
+        if ingr_count==0.0:
+            print "Entered the for loop"
         this_recipe={}
         this_recipe['title']=this_entry['recipeName']
         this_recipe['rating']=this_entry['rating']
         this_recipe['ingredients']=this_entry['ingredients']
+        print "Assigned three dictionary entries"
         recipes[this_entry['id']]=this_recipe
         ingr_count+=len(this_recipe['ingredients'])
         count+=1
@@ -73,7 +77,7 @@ def pull_recipes(the_json): #receives a json, returns a dictionary of recipes
     recipes['AVG']=float(running_total)/count
     recipes['COUNT']=(count)
     recipes['INGRS']=ingr_count/count
-    
+    print "exited the for loop."
     return recipes
 
 
