@@ -17,7 +17,7 @@ def index():
 
 @app.route('/choose/',methods=['GET','POST'])
 def choose():
-		print "got here."
+		#print "got here."
 		if request.method == 'POST':
 			choice=request.form['choice']
 			item=request.form['food']
@@ -49,3 +49,7 @@ def ingredient(ingr=None):
 def dish(dish=None):
     return render_template('dish.html', dish=dish)
 
+if __name__ == '__main__':
+    app.run(debug=True)
+    app.run(host='bref-saucisson-83835.herokuapp.com/', port=5000)
+    #app.run(host='127.0.0.1', port=5000)
