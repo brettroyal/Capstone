@@ -1,0 +1,30 @@
+<!doctype html>
+<title>Let's get edible.</title>
+<link rel=stylesheet type=text/css href={{ url_for('static',filename='style.css')}}>
+<div class=page width=1000>
+  <h2><strong>TDI Capstone Project- </strong><em> Identifying Secret Ingredients</em></h2>
+  <table width=1000 align="center"><tr><td width="200" align="center" ><tr><td class="whatever">
+  <div class="whatever">
+
+    <h4>
+      Enter a food item, select Ingredient or Dish, and click Submit.
+    </h4>
+
+        <form id='edible' method='POST' action='choose/' >
+           Item: <input type='text' name='food' /><br>
+        <!--<input type="radio" name="choice" value="ingr" />Ingredient-->
+        <input type="radio" name="choice" value="dish" checked="checked"  />Dish
+        <input type='submit' value='Science some food data!' />
+        </form>
+
+  </div>
+</td>
+<td class="whatever">
+  <div class="whatever">
+  <p>This project is concerned with identifying what I'm calling secret ingredients.  They're not secrets because nobody knows what they are, but they're secrets because you gotta try a hundred different recipes before you know which ingredients make a difference.  That's where data science comes in.</p>
+  <p>This project utilizes the Yummly API, analyzing ratings and ingredients for each recipe.  </p>
+  <p>Currently, you can search by dish, and an ingredient breakdown and discussion is provided.</p>
+  </div>
+  </td>
+</div>
+</html>

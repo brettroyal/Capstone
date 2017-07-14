@@ -1,0 +1,50 @@
+<html>
+<head>
+ <link rel="stylesheet" href="https://cdn.pydata.org/bokeh/release/bokeh-0.12.4.min.css" type="text/css" />
+         
+  <script type="text/javascript" src="https://cdn.pydata.org/bokeh/release/bokeh-0.12.4.min.js"></script>
+<script type="text/javascript">
+    Bokeh.set_log_level("info");
+</script>
+
+<title>Maximizing Taste.</title>
+<link rel=stylesheet type=text/css href={{ url_for('static',filename='style.css')}}>
+</head>
+<body>
+<table width="1000" align="center">
+	<tr>
+		<td width="200">
+			<div align="left">
+        <form id='edible' method='POST' action='/choose/' >
+           Item: <input type='text' name='food' /><br>
+        <input type="radio" name="choice" value="ingr" />Ingredient
+        <input type="radio" name="choice" value="dish" />Dish
+        <input type='submit' value='Science some food data!' />
+        </form>
+    	</div>
+		</td>
+	<td width="800">
+{% if ingr %}
+	<div>
+
+  <h1>Dish Analysis for the ingredient <em>{{ ingr }}</em>:</h1>
+  <li>{{ ingr }} appears in XXXX total recipes
+  <li>{{ ingr }} recipes have an average rating of YYY, compared to the average ZZZ
+  <li>{{ ingr }} recipes are thus rated XXX better/worse than the average.  
+  <li>{{ ingr }} appears most often with AAA,BBB, and CCC
+  <li>The best recipes that include {{ ingr }} 	are:
+</div>
+<div align="center">
+{{div|safe}}
+{{script|safe}}
+</div>
+{% else %}
+<div>
+  <h1>Enter a dish or ingredient in the box to the left.</h1>
+</div>
+{% endif %}
+</td>
+</tr>
+</table>
+</body>
+</html>
