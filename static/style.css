@@ -37,9 +37,13 @@ a:visited{color: darkmagenta;};
 
 /* Sortable tables */
 .sortable thead {
-    
+
     font-weight: bold;
     cursor: default;
+}
+
+.center {
+  text-align: center;
 }
 /*
 .bk-root{
