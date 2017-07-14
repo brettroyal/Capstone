@@ -49,3 +49,7 @@ def ingredient(ingr=None):
 def dish(dish=None):
     return render_template('dish.html', dish=dish)
 
+if __name__ == '__main__':
+    app.run(debug=True)
+    app.run(host='bref-saucisson-83835.herokuapp.com/', port=5000)
+    #app.run(host='127.0.0.1', port=5000)
