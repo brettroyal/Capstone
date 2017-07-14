@@ -22,7 +22,7 @@ key='d5a953efaeeb4f854defde290177c340'
 auth_string='_app_id='+app_id+'&_app_key='+key
 ingr='lemon'
 recipe='key lime pie'
-recipe=string.replace(recipe,' ','%20')
+recipe.replace(recipe,' ','%20')
 pp = pprint.PrettyPrinter(indent=4)
 
 
@@ -39,16 +39,16 @@ def get_recipe_string(recipe_id):
 def get_search_url(recipe=False,ingr=False,max=500):
     stub='http://api.yummly.com/v1/api/recipes?'
     if recipe and not ingr:
-        query='&q='+string.replace(recipe,' ','%20')+'&maxResult='+str(max)
+        query='&q='+recipe.replace(' ','%20')+'&maxResult='+str(max)
         return stub+auth_string+query #your search parameters
     elif ingr and not recipe:
         query='&allowedIngredient[]='+ingr+'&maxResult='+str(max)
         return stub+auth_string+query
     elif ingr and recipe:
-        query=stub+auth_string+'&q='+string.replace(recipe,' ','%20')+'&allowedIngredient[]='+ingr+'&maxResult='+str(max)
+        query=stub+auth_string+'&q='+recipe.replace(' ','%20')+'&allowedIngredient[]='+ingr+'&maxResult='+str(max)
         return query
     else:
-        query='q='+ustring.replace('black bean soup',' ','%20')
+        query='q='+'black bean soup'.replace(' ','%20')
         return 'http://api.yummly.com/v1/api/recipes?'+auth_string+'&'+query
 
 
