@@ -9,5 +9,5 @@ simplejson>=3.8.0
 pandas==0.20.2
 bokeh>=0.10
 datetime>0
-urllib>0
+urllib2>0
 ast>0

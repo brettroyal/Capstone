@@ -4,7 +4,7 @@
 # In[1]:
 
 
-import urllib
+import urllib2
 import requests
 import ast
 import json
@@ -23,7 +23,7 @@ key='d5a953efaeeb4f854defde290177c340'
 auth_string='_app_id='+app_id+'&_app_key='+key
 ingr='lemon'
 recipe='key lime pie'
-recipe=urllib.quote(recipe)
+recipe=urllib2.quote(recipe)
 pp = pprint.PrettyPrinter(indent=4)
 
 
@@ -40,16 +40,16 @@ def get_recipe_string(recipe_id):
 def get_search_url(recipe=False,ingr=False,max=500):
     stub='http://api.yummly.com/v1/api/recipes?'
     if recipe and not ingr:
-        query='&q='+urllib.quote(recipe)+'&maxResult='+str(max)
+        query='&q='+urllib2.quote(recipe)+'&maxResult='+str(max)
         return stub+auth_string+query #your search parameters
     elif ingr and not recipe:
         query='&allowedIngredient[]='+ingr+'&maxResult='+str(max)
         return stub+auth_string+query
     elif ingr and recipe:
-        query=stub+auth_string+'&q='+urllib.quote(recipe)+'&allowedIngredient[]='+ingr+'&maxResult='+str(max)
+        query=stub+auth_string+'&q='+urllib2.quote(recipe)+'&allowedIngredient[]='+ingr+'&maxResult='+str(max)
         return query
     else:
-        query='q='+urllib.quote('black bean soup')
+        query='q='+urllib2.quote('black bean soup')
         return 'http://api.yummly.com/v1/api/recipes?'+auth_string+'&'+query
 
 
