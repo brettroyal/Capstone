@@ -73,7 +73,7 @@ def pull_recipes(the_json): #receives a json, returns a dictionary of recipes
         ingr_count+=len(this_recipe['ingredients'])
         count+=1
         running_total+=this_entry['rating']
-        if ingr_count==300:
+        if ingr_count==100:
             print "Assigned three dictionary entries"
             print "Running total is ", running_total
             print "Count is ", count

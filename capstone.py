@@ -21,7 +21,8 @@ def choose():
 		#print "got here."
 		if request.method == 'POST':
 			print "line 22"
-			choice=request.form['choice']
+			#choice=request.form['choice']
+			choice='dish'
 			print "line24"
 			item=request.form['food']
 			print "line 26"
