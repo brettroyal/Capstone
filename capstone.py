@@ -35,7 +35,7 @@ def choose():
 		# 		# script_diff_conf,div_diff_conf=diff_by_conf_plot(ingr,item) #produce the correct graph
 		# 		# script_AbD,div_AbD=AVG_by_diff_plot(ingr,item)
 		# 		# table_div=ingr_table(ingr)
-				return render_template('dish.html', ingr=item)#, div_conf=div_diff_conf,script_conf=script_diff_conf,div_stats=div_stats,div_bets=div_bets,table_div=table_div,script_AbD=script_AbD,div_AbD=div_AbD)
+					return render_template('dish.html', ingr=item)#, div_conf=div_diff_conf,script_conf=script_diff_conf,div_stats=div_stats,div_bets=div_bets,table_div=table_div,script_AbD=script_AbD,div_AbD=div_AbD)
 			# elif (choice=='ingr'):
 		# 		return render_template('ingr.html', dish=item)
 		# 	else:
