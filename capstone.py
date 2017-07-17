@@ -20,29 +20,31 @@ def index():
 def choose():
 		#print "got here."
 		if request.method == 'POST':
-			print "line 22"
 			#choice=request.form['choice']
 			choice='dish'
-			print "line24"
 			item=request.form['food']
-			print "line 26"
-			print "The choice was ", choice, "and item was ", item
 			if choice=='dish':
-					print "in the if."
 					url=get_search_url(recipe=item) #determine correct url
-					print url
 					results_json=requests.get(url) #get json from yummly
-					print results_json.text[:50]
 					recipes=pull_recipes(results_json.text) #pull apart recipes
-					
 					ingr,recipes['appr']=analyze_recipes(recipes) #analyse ingredients
-					print "Recipes appr: ", recipes['appr']
-					div_stats=recipe_stats(recipes,item,ingr)
-					div_bets=bets(ingr)
+					gen_html=''
+					gen_html+=recipe_stats(recipes,item,ingr) #ADD RECIPE STATS
+					
 					script_diff_conf,div_diff_conf=diff_by_conf_plot(ingr,item) #produce the correct graph
+					gen_html+='<tr><td></td><td class="whatever">'+script_diff_conf
+					gen_html+=div_diff_conf+'</td></tr>'
+					gen_html+=bets(ingr)
+					
 					script_AbD,div_AbD=AVG_by_diff_plot(ingr,item)
-					table_div=ingr_table(ingr)
-					return render_template('dish.html', ingr=item, div_stats=div_stats, div_conf=div_diff_conf,script_conf=script_diff_conf, div_bets=div_bets,table_div=table_div,script_AbD=script_AbD,div_AbD=div_AbD)
+					gen_html+='<tr><td></td><td class="whatever">'+script_AbD
+					gen_html+=div_AbD+'</td></tr>'
+
+					gen_html+=ingr_table(ingr)
+					#I want the return to look like this:
+					#gen_html=div_stats+script_diff_conf++div_bets++table_div
+					return render_template('dish.html',ingr=item,gen_html=gen_html)
+					#return render_template('dish.html', ingr=item, div_stats=div_stats, div_conf=div_diff_conf,script_conf=script_diff_conf, div_bets=div_bets,table_div=table_div,script_AbD=script_AbD,div_AbD=div_AbD)
 			# elif (choice=='ingr'):
 		# 		return render_template('ingr.html', dish=item)
 		# 	else:

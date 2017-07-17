@@ -36,36 +36,10 @@
   {% if ingr %}
   <td class="whatever"><p align="center" class="whatever"><h1 class="center"><center>{{ ingr }}</center></h1></p</td>
 </tr>
-  <tr><td></td>
-  <td class="whatever">
-    {{div_stats|safe}}
-  </td>
-</tr>
-<tr>
-  <td></td>
-  <td align="center">
-    <div align="center">
-    {{div_conf|safe}}
-    {{script_conf|safe}}
-    </div>
-  {{div_bets|safe}}
-  </td>
-</tr>
-<tr>
-  <td></td>
-  <td align="center">
-    <div align="center">
-    {{div_AbD|safe}}
-    {{script_AbD|safe}}
-    </div>
-  </td>
-</tr>
-<tr>
-  <td></td>
-  <td class="whatever">
-    {{table_div|safe}}
-  </td>
-</tr>
+  
+{{gen_html|safe}}
+
+
 </table>
 
 

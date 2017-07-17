@@ -375,7 +375,7 @@ def recipes_to_graph(recipe_type):
     file_name=recipe_type+'.html'
     another_test(ingr,recipe_type,file_name)
 def recipe_stats(recipes,the_recipe,ingr):
-    return_string='<div class="whatever">'
+    return_string='<tr><td></td><td class="whatever"><div class="whatever">'
     return_string+="There are "+ str(recipes['COUNT'])+ " total recipes for <b>"+ the_recipe+ "</b><br>"
     return_string+="The average rating is "+ str(recipes['AVG'])+ "<br>"
     return_string+="There are a total of "+ str(len(ingr)) +" distinct ingredients used in these recipes"+"<br>"
@@ -390,7 +390,7 @@ def recipe_stats(recipes,the_recipe,ingr):
     most_common=sorted(common,key=lambda x:x[0])
     most_common=[x[1] for x in most_common[:5]]
     top_5=most_common[0]+", "+most_common[1]+", "+most_common[2]+", "+most_common[3]+", and "+most_common[4]
-    return_string+= "The least common ingredients are: "+ top_5+ "<br></div>"
+    return_string+= "The least common ingredients are: "+ top_5+ "<br></div></td></tr>"
     return return_string
 
 def bets(ingr):
@@ -412,7 +412,9 @@ def ingr_table(ingr):
     import string
     ingr_df=DataFrame.from_dict(ingr,orient='index')
     return_string=ingr_df.to_html()
-    sortable=string.replace(return_string,'dataframe','sortable')
+    sortable='<tr><td></td><td class="whatever">'
+    sortable+=string.replace(return_string,'dataframe','sortable')
+    sortable+='</td></tr>'
     return sortable
     #return return_string
 
