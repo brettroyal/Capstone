@@ -458,7 +458,7 @@ def recipe_stats(recipes,the_recipe,ingr):
 
 def bets(ingr):
     return_string='<tr><td></td><td class="whatever"><div class="whatever">'
-    confidence=np.array(list((float(1+ingr[thing]['diff']**2*(((1+ingr[thing]['CONF'])))),thing) for thing in ingr))
+    confidence=np.array(list((float(1+ingr[thing]['diff']**3*(((1+ingr[thing]['CONF'])))),thing) for thing in ingr))
     conf_sorted=sorted(confidence,reverse=True,key=lambda x:float(x[0]))
     #print conf_sorted
 #     print conf_sorted[0:5]
