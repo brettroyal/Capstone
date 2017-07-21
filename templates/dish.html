@@ -2,14 +2,14 @@
 <head>
 
 <link
-    href="https://cdn.pydata.org/bokeh/release/bokeh-0.12.6.min.css"
+    href="http://cdn.pydata.org/bokeh/release/bokeh-0.12.6.min.css"
     rel="stylesheet" type="text/css">
 <link
-    href="https://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.6.min.css"
+    href="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.6.min.css"
     rel="stylesheet" type="text/css">
 
-<script src="https://cdn.pydata.org/bokeh/release/bokeh-0.12.6.min.js"></script>
-<script src="https://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.6.min.js"></script>
+<script src="http://cdn.pydata.org/bokeh/release/bokeh-0.12.6.min.js"></script>
+<script src="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.6.min.js"></script>
 <!--<script src="/Scripts/sorttable.js"></script> -->
 
 <script src="{{ url_for('static',filename='sorttable.js')}}"></script>
@@ -34,7 +34,7 @@
       </div>
     </td>
   {% if ingr %}
-  <td class="whatever"><p align="center" class="whatever"><h1 class="center"><center>{{ ingr }}</center></h1></p</td>
+  <td class="whatever"><div align="center" class="whatever"><h1 class="center"><center>{{ ingr }}</center></h1></div></td>
 </tr>
   
 {{gen_html|safe}}

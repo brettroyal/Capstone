@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect
 from yummly import *
 app = Flask(__name__)
 
+
 def bokeh_practice():
 		from bokeh.plotting import figure
 		from bokeh.embed import components
@@ -10,8 +11,24 @@ def bokeh_practice():
 		#plot_width=400, plot_height=400
 		return components(plot) 	
 
-@app.route('/',methods=['GET','POST'])
+def error_html(item):
+	return '<tr><td></td><td class="whatever"><div class="whatever">Sorry, we forgot to set a timer and the '+item +' burned.<br>Try something else?</div></td></tr>'
 
+def generate_dish_html(recipes,item,ingr):
+	gen_html=''
+	gen_html+=recipe_stats(recipes,item,ingr) #ADD RECIPE STATS
+	script_diff_conf,div_diff_conf=diff_by_conf_plot(ingr,item) #produce the correct graph
+	gen_html+='<tr><td></td><td>'+div_diff_conf+script_diff_conf+'</td></tr>'
+	gen_html+=bets(ingr)
+	script_AbD,div_AbD=AVG_by_diff_plot(ingr,item)
+	print div_AbD
+	gen_html+='<tr><td></td><td>'+div_AbD+script_AbD+'</td></tr>'
+	gen_html+=ingr_table(ingr)
+	return gen_html
+
+
+
+@app.route('/',methods=['GET','POST'])
 def index():
 		print "index got called here."
 		return render_template('index.html')
@@ -24,45 +41,49 @@ def choose():
 			choice='dish'
 			item=request.form['food']
 			if choice=='dish':
-					url=get_search_url(recipe=item) #determine correct url
-					results_json=requests.get(url) #get json from yummly
-					recipes=pull_recipes(results_json.text) #pull apart recipes
-					ingr,recipes['appr']=analyze_recipes(recipes) #analyse ingredients
-					gen_html=''
-					gen_html+=recipe_stats(recipes,item,ingr) #ADD RECIPE STATS
-					
-					script_diff_conf,div_diff_conf=diff_by_conf_plot(ingr,item) #produce the correct graph
-					gen_html+='<tr><td></td><td class="whatever">'+script_diff_conf
-					gen_html+=div_diff_conf+'</td></tr>'
-					gen_html+=bets(ingr)
-					
-					script_AbD,div_AbD=AVG_by_diff_plot(ingr,item)
-					gen_html+='<tr><td></td><td class="whatever">'+script_AbD
-					gen_html+=div_AbD+'</td></tr>'
-
-					gen_html+=ingr_table(ingr)
-					#I want the return to look like this:
-					#gen_html=div_stats+script_diff_conf++div_bets++table_div
+					try:
+						url=get_search_url(recipe=item) #determine correct url
+						results_json=requests.get(url) #get json from yummly
+						recipes=pull_recipes(results_json.text) #pull apart recipes
+						ingr,recipes['appr']=analyze_recipes(recipes) #analyse ingredients
+					except:
+						gen_html=error_html(item)
+						return render_template('dish.html',ingr=item,gen_html=gen_html)	
+					gen_html=generate_dish_html(recipes,item,ingr)
 					return render_template('dish.html',ingr=item,gen_html=gen_html)
-					#return render_template('dish.html', ingr=item, div_stats=div_stats, div_conf=div_diff_conf,script_conf=script_diff_conf, div_bets=div_bets,table_div=table_div,script_AbD=script_AbD,div_AbD=div_AbD)
-			# elif (choice=='ingr'):
-		# 		return render_template('ingr.html', dish=item)
-		# 	else:
-		# 		return render_template('index.html', ingr=ingr)
-		# else:
+
 			return render_template('index.html', ingr=ingr)
-
-
 
 @app.route('/ingredient/<ingr>/',methods=['GET','POST'])
 def ingredient(ingr=None):
 	print "Ingredient function"
 	return render_template('ingr.html', ingr=ingr)
 
-@app.route('/dish/<dish>/',methods=['GET','POST'])
+@app.route('/dish/<dish>/',methods=['GET','POST']) 
 def dish(dish=None):
-	print "Dish function"
+	if request.method == 'POST':
+			return render_template('dish.html', dish=dish)
+	else:
+			#choice=request.form['choice']
+			#item=request.args['food']
+			item=dish
+			print item, "was the item"
+			try:
+				url=get_search_url(recipe=item) #determine correct url
+				results_json=requests.get(url) #get json from yummly
+				recipes=pull_recipes(results_json.text) #pull apart recipes
+				ingr,recipes['appr']=analyze_recipes(recipes) #analyse ingredients
+			except:
+				gen_html=error_html(item)
+				return render_template('dish.html',ingr=item,gen_html=gen_html)	
+			
+			gen_html=generate_dish_html(recipes,item,ingr)
+			return render_template('dish.html',ingr=item,gen_html=gen_html)
 	return render_template('dish.html', dish=dish)
+
+@app.route('/dish',methods=['GET','POST']) 
+def dishblank(dish=None):
+		return render_template('dish.html', dish=dish)
 
 if __name__ == '__main__':
     app.run(debug=True)

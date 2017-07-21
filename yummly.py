@@ -17,14 +17,9 @@ from bokeh.plotting import figure, output_file, show, ColumnDataSource
 from bokeh.embed import components
 import string
 
-app_id='fe5797c1'
-key='d5a953efaeeb4f854defde290177c340'
-auth_string='_app_id='+app_id+'&_app_key='+key
-ingr='lemon'
-recipe='key lime pie'
-recipe.replace(' ','%20')
-pp = pprint.PrettyPrinter(indent=4)
+#######API INJFO
 
+##########################
 
 # In[2]:
 
@@ -394,7 +389,7 @@ def recipe_stats(recipes,the_recipe,ingr):
     return return_string
 
 def bets(ingr):
-    return_string='<tr><td></td><td class="whatever"><div class="whatever">'
+    return_string='<tr><td></td><td class="whatever">'
     confidence=np.array(list((float(1+ingr[thing]['diff']**2*(((1+ingr[thing]['CONF'])**2))),thing) for thing in ingr))
     conf_sorted=sorted(confidence,reverse=True,key=lambda x:float(x[0]))
     #print conf_sorted
