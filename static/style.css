@@ -1,3 +1,16 @@
+.whatever a:link{
+    color: rgb(0, 51, 153);
+}
+.whatever a:visited {
+    color: rgb(0, 51, 153);
+}
+.whatever a:hover {
+    color: rgb(153, 204, 255);
+    text-decoration: underline;
+}
+.whatever a:active {
+    color: rgb(0, 51, 153);
+}
 .myDIV { display: none; }
 .whatever td{
   -webkit-box-sizing: content-box;
@@ -35,8 +48,6 @@ font: normal 30px/1 "Lucida Sans Unicode", "Lucida Grande", sans-serif;
   color: rgba(18,73,122,1);
 };
 
-a:hover{color: hotpink background-color:blue;};
-a:visited{color: darkmagenta;};
 
 /* Sortable tables */
 .sortable thead {
