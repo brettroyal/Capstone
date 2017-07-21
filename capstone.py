@@ -18,11 +18,14 @@ def generate_dish_html(recipes,item,ingr):
 	gen_html=''
 	gen_html+=recipe_stats(recipes,item,ingr) #ADD RECIPE STATS
 	script_diff_conf,div_diff_conf=diff_by_conf_plot(ingr,item) #produce the correct graph
-	gen_html+='<tr><td></td><td>'+div_diff_conf+script_diff_conf+'</td></tr>'
+	gen_html+='<tr><td></td><td><div align="center">'+div_diff_conf+script_diff_conf+'</div></td></tr>'
 	gen_html+=bets(ingr)
 	script_AbD,div_AbD=AVG_by_diff_plot(ingr,item)
-	print div_AbD
-	gen_html+='<tr><td></td><td>'+div_AbD+script_AbD+'</td></tr>'
+	#print div_AbD
+	gen_html+='<tr><td></td><td><div align="center">'+div_AbD+script_AbD+'</div></td></tr>'
+	gen_html+=above_below_html(recipes,ingr)
+	s,d=expected_actual(recipes,ingr)
+	gen_html+='<tr><td></td><td><div align="center">'+d+s+'</div></td></tr>'
 	gen_html+=ingr_table(ingr)
 	return gen_html
 

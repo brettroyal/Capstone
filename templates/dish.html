@@ -7,7 +7,16 @@
 <link
     href="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.6.min.css"
     rel="stylesheet" type="text/css">
-
+<script>
+function myFunction() {
+    var x = document.getElementById('myDIV');
+    if (x.style.display === 'none') {
+        x.style.display = 'block';
+    } else {
+        x.style.display = 'none';
+    }
+}
+</script>
 <script src="http://cdn.pydata.org/bokeh/release/bokeh-0.12.6.min.js"></script>
 <script src="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.6.min.js"></script>
 <!--<script src="/Scripts/sorttable.js"></script> -->
@@ -26,9 +35,9 @@
     <td width="200" class="whatever">
       <div align="left" class="whatever">
         <form id='edible' method='POST' action='/choose/' >
-           Item: <input type='text' name='food' /><br>
-        <input type="radio" name="choice" value="ingr" />Ingredient
-        <input type="radio" name="choice" value="" checked="checked" /><label for="choice">Dish</label>
+           Enter a dish, get some science.<br>
+           <input type='text' name='food' /><br>
+
         <input type='submit' value='Science some food data!' />
         </form>
       </div>

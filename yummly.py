@@ -18,7 +18,13 @@ from bokeh.embed import components
 import string
 
 #######API INJFO
-
+app_id='fe5797c1'
+key='d5a953efaeeb4f854defde290177c340'
+auth_string='_app_id='+app_id+'&_app_key='+key
+ingr='lemon'
+recipe='key lime pie'
+recipe.replace(' ','%20')
+pp = pprint.PrettyPrinter(indent=4)
 ##########################
 
 # In[2]:
@@ -352,15 +358,73 @@ def diff_by_conf_plot(ingr,recipe_name):
     save(p)
     return components(p)
 
+def weight_scores(recipes,ingrs):
+    import heapq
+    overweight=[]
+    the_average=recipes['AVG']
+    for recipe in recipes:
+        if recipe not in ['COUNT','AVG','appr','INGRS']:
+            total_ingredients=len(recipes[recipe]['ingredients'])
+            running_total=0.0
+            #print running_total
+            for ingr in recipes[recipe]['ingredients']:
+                try:
+                    running_total=ingrs[ingr]['diff']
+                except:
+                    running_total=running_total
+            expected_diff=running_total/total_ingredients
+            overweight.append((recipe,expected_diff))
+    return overweight
 
-# In[190]:
+def expected_actual(recipes,ingrs):
+    scores=weight_scores(recipes,ingrs)
+    the_title=''
+    #output_file(file_name,title=the_title)
+    score_dict={}
+    for score in scores:
+        score_dict[score[0]]=score[1]
+    names=[]
+    numbers=[]
+    ratings=[]
+    for recipe in recipes:
+        if recipe not in ['AVG','COUNT','appr','INGRS']:
+            #print recipes[recipe]['title']
+            names.append(recipes[recipe]['title'])
+            numbers.append(score_dict[recipe])
+            ratings.append(recipes[recipe]['rating'])
+    x1=np.array(ratings)
+    y1=np.array(numbers)
+    r1=np.array(names)
 
+    TOOLS="hover,crosshair,pan,wheel_zoom,box_zoom,undo,hover"
+    source = ColumnDataSource(
+            data=dict(
+                x=x1,
+                y=y1,
+                desc=r1,
+            )
+        )
 
-# another_test(ingr,the_recipe,"hummus.html")
+    hover = HoverTool(
+            tooltips=[
+                #("index", "$index"),
+                ("Recipe:", "@desc"),
+                ("Rating:", "$x"),
+                ("Predicted", "$y"),
+                
+            ]
+        )
+    zoom = WheelZoomTool()
+    pan=PanTool()
+    #p = figure(tools=TOOLS)
+    graph_title=the_title+": Actual Grade(x) versus Ingredient Score(y)"
+    p = figure(plot_width=600, plot_height=400,
+               title=graph_title, tools=[pan,hover,zoom],toolbar_location="above")
 
+    p.circle('x', 'y', size=10, source=source,fill_alpha=.1,color="Orange")
 
-# In[199]:
-
+    save(p)
+    return components(p)
 
 def recipes_to_graph(recipe_type):
     url=get_search_url(recipe=recipe_type)
@@ -371,34 +435,40 @@ def recipes_to_graph(recipe_type):
     another_test(ingr,recipe_type,file_name)
 def recipe_stats(recipes,the_recipe,ingr):
     return_string='<tr><td></td><td class="whatever"><div class="whatever">'
-    return_string+="There are "+ str(recipes['COUNT'])+ " total recipes for <b>"+ the_recipe+ "</b><br>"
-    return_string+="The average rating is "+ str(recipes['AVG'])+ "<br>"
-    return_string+="There are a total of "+ str(len(ingr)) +" distinct ingredients used in these recipes"+"<br>"
-    return_string+= "Each recipe has an average of "+str(recipes['INGRS'])+" total ingredients <br>"
+    return_string+="<li>There are "+ str(recipes['COUNT'])+ " total recipes for <b>"+ the_recipe+ "</b><br>"
+    return_string+="<li>The average rating is "+ str(recipes['AVG'])+ "<br>"
+    return_string+="<li>There are a total of "+ str(len(ingr)) +" distinct ingredients used in these recipes"+"<br>"
+    return_string+= "<li>Each recipe has an average of %.2f"%(recipes['INGRS'])+" total ingredients <br>"
     common=np.array(list((float(ingr[thing]['apprRATE']),thing) for thing in ingr))
     
     most_common=sorted(common,reverse=True,key=lambda x:x[0])
-    most_common=[x[1] for x in most_common[:5]]
-    top_5=most_common[0]+", "+most_common[1]+", "+most_common[2]+", "+most_common[3]+", and "+most_common[4]
-    return_string+= "The most common ingredients are: "+top_5+ "<br>"
     
+    return_string+= "<br>The most common ingredients are: "
+    for x in range(0,5):
+        return_string+="<li>"+most_common[x][1]
+
+    return_string+="<br>The least common ingredients are: "
     most_common=sorted(common,key=lambda x:x[0])
     most_common=[x[1] for x in most_common[:5]]
-    top_5=most_common[0]+", "+most_common[1]+", "+most_common[2]+", "+most_common[3]+", and "+most_common[4]
-    return_string+= "The least common ingredients are: "+ top_5+ "<br></div></td></tr>"
+    for x in range(0,5):
+        return_string+= "<li>"+most_common[x]
+
+    "<br></div></td></tr>"
     return return_string
 
 def bets(ingr):
-    return_string='<tr><td></td><td class="whatever">'
-    confidence=np.array(list((float(1+ingr[thing]['diff']**2*(((1+ingr[thing]['CONF'])**2))),thing) for thing in ingr))
+    return_string='<tr><td></td><td class="whatever"><div class="whatever">'
+    confidence=np.array(list((float(1+ingr[thing]['diff']**2*(((1+ingr[thing]['CONF'])))),thing) for thing in ingr))
     conf_sorted=sorted(confidence,reverse=True,key=lambda x:float(x[0]))
     #print conf_sorted
 #     print conf_sorted[0:5]
 #     print conf_sorted[-6:-1]
-    best_bets=conf_sorted[0][1]+", "+conf_sorted[1][1]+", "+conf_sorted[2][1]+", "+conf_sorted[3][1]+", and "+conf_sorted[4][1]
-    
-    worst_bets=conf_sorted[-1][1]+", "+conf_sorted[-2][1]+", "+conf_sorted[-3][1]+", "+conf_sorted[-4][1]+", and "+conf_sorted[-5][1]
-    return_string+="Your best bets are "+best_bets+"<br>"+"Your worst bets are "+worst_bets+'<br>'
+    return_string+="<br>Your best bets are "
+    for x in range(0,5):
+        return_string+="<li>"+conf_sorted[x][1]
+    return_string+="<br><br>Your worst bets are"
+    for x in range(-6,-1):
+        return_string+="<li>"+conf_sorted[x][1]
     return_string+="</div></td></tr>"
     return return_string
 
@@ -406,10 +476,50 @@ def ingr_table(ingr):
     from pandas import DataFrame
     import string
     ingr_df=DataFrame.from_dict(ingr,orient='index')
+    ingr_df['Bets']=ingr_df['CONF'] * ingr_df['diff']
     return_string=ingr_df.to_html()
-    sortable='<tr><td></td><td class="whatever">'
+    sortable='''<tr><td></td><td class="whatever"><button onclick="myFunction()">Click here to Show/Hide Sortable Ingredient List</button>
+<div id="myDIV" style="display:none">
+'''
     sortable+=string.replace(return_string,'dataframe','sortable')
-    sortable+='</td></tr>'
+    sortable+='</div></td></tr>'
     return sortable
     #return return_string
 
+def above_weight(recipes,ingrs):
+    import heapq
+    overweight=[]
+    the_average=recipes['AVG']
+    for recipe in recipes:
+        if recipe not in ['COUNT','AVG','appr','INGRS']:
+            total_ingredients=len(recipes[recipe]['ingredients'])
+            running_total=0.0
+            #print running_total
+            for ingr in recipes[recipe]['ingredients']:
+                try:
+                    running_total=ingrs[ingr]['diff']
+                except:
+                    running_total=running_total
+            expected_diff=running_total/total_ingredients
+            overweight.append((recipe,expected_diff))
+
+    overweight=sorted(overweight, key=lambda x: x[1],reverse=True)
+    return overweight[:5], overweight[-6:-1]
+
+def above_below_html(recipes,ingrs):
+    best,worst=above_weight(recipes, ingrs)
+    return_html='<tr><td></td><td class="whatever"><div class="whatever">The recipes with the best ingredients are<br>'
+    for good in best:
+        #print recipes[good[0]]['title']
+        rate=good[1]*100.0
+        return_html+='<li><strong>'+recipes[good[0]]['title']+'</strong> ingredients score %2.1f'%rate+'% better than expected '
+        return_html+='<a href="https://www.yummly.co/#recipe/'+good[0]+'">(yummly link)</a>'
+    return_html+='</div><div class="whatever">The recipes with the worst ingredients are<br>'
+    for bad in worst:
+        #print recipes[good[0]]['title']
+        rate=bad[1]*100.0*-1
+        return_html+='<li><strong>'+recipes[bad[0]]['title']+'</strong> ingredients score %2.1f'%rate+'% worse than expected '
+        return_html+='<a href="https://www.yummly.co/#recipe/'+bad[0]+'">(yummly link)</a>'    
+        
+    return_html+="</div></td></tr>"
+    return return_html

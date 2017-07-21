@@ -1,3 +1,4 @@
+.myDIV { display: none; }
 .whatever td{
   -webkit-box-sizing: content-box;
   -moz-box-sizing: content-box;
