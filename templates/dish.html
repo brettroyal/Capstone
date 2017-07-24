@@ -44,7 +44,10 @@ function myFunction() {
       </div>
     </td>
   {% if ingr %}
-  <td class="whatever"><div align="center" class="whatever"><h1 class="center"><center>{{ ingr }}</center></h1></div></td>
+  <td class="whatever"><div align="center" class="whatever"><h1 class="center"><center>{{ ingr }}
+{% if ingrs %}<br><em><small> with {{ pretty_ingrs }}</em></small> {% endif %}
+
+  </center></h1></div></td>
 </tr>
   
 {{gen_html|safe}}

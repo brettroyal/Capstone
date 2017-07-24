@@ -27,7 +27,7 @@ recipe.replace(' ','%20')
 pp = pprint.PrettyPrinter(indent=4)
 ##########################
 
-# In[2]:
+# In[2]: http://api.yummly.com/v1/api/metadata/ingredient?_app_id=fe5797c1&_app_key=d5a953efaeeb4f854defde290177c340
 
 
 def get_recipe_string(recipe_id):
@@ -39,14 +39,20 @@ def get_recipe_string(recipe_id):
 
 def get_search_url(recipe=False,ingr=False,max=500):
     stub='http://api.yummly.com/v1/api/recipes?'
+    if ingr:
+        all_ingrs=list(set(ingr.split(',')))
+        ingr_string=''
+        for i in all_ingrs:
+            ingr_string+='&allowedIngredient[]='+i
+
     if recipe and not ingr:
         query='&q='+recipe.replace(' ','%20')+'&maxResult='+str(max)
         return stub+auth_string+query #your search parameters
     elif ingr and not recipe:
-        query='&allowedIngredient[]='+ingr+'&maxResult='+str(max)
+        query=ingr_string+'&maxResult='+str(max)
         return stub+auth_string+query
     elif ingr and recipe:
-        query=stub+auth_string+'&q='+recipe.replace(' ','%20')+'&allowedIngredient[]='+ingr+'&maxResult='+str(max)
+        query=stub+auth_string+'&q='+recipe.replace(' ','%20')+ingr_string+'&maxResult='+str(max)
         return query
     else:
         query='q='+'black bean soup'.replace(' ','%20')
@@ -104,10 +110,15 @@ def analyze_recipes(recipes): #gets a dict of recipes, returns a dict of ingredi
     avg_value={}
     appr_count=0
     for ingr in all_ingredients:
+        #print ingr
         avg_value[ingr]={}
         avg_value[ingr]['AVG']=float(sum(all_ingredients[ingr]))/float(len(all_ingredients[ingr]))
         avg_value[ingr]['COUNT']=len(all_ingredients[ingr]) #this is how many recipes it appears in!  duh!
-        avg_value[ingr]['sansAVG']=((recipes['COUNT']*recipes['AVG'])-(avg_value[ingr]['COUNT']*avg_value[ingr]['AVG']))/(recipes['COUNT']-avg_value[ingr]['COUNT'])
+        try:
+            avg_value[ingr]['sansAVG']=((recipes['COUNT']*recipes['AVG'])-(avg_value[ingr]['COUNT']*avg_value[ingr]['AVG']))/(recipes['COUNT']-avg_value[ingr]['COUNT'])
+        except:
+            avg_value[ingr]['sansAVG']=avg_value[ingr]['AVG']
+                       
         try:
             avg_value[ingr]['diff']=(avg_value[ingr]['AVG']-avg_value[ingr]['sansAVG'])/avg_value[ingr]['AVG']
         except:
@@ -456,7 +467,7 @@ def recipe_stats(recipes,the_recipe,ingr):
     "<br></div></td></tr>"
     return return_string
 
-def bets(ingr):
+def bets(ingr,dish=None,the_ingrs=None):
     return_string='<tr><td></td><td class="whatever"><div class="whatever">'
     confidence=np.array(list((float(ingr[thing]['diff']*math.log(ingr[thing]['COUNT'])),thing) for thing in ingr))
     conf_sorted=sorted(confidence,reverse=True,key=lambda x:float(x[0]))
@@ -465,7 +476,11 @@ def bets(ingr):
 #     print conf_sorted[-6:-1]
     return_string+="<br>Your best bets are "
     for x in range(0,5):
-        return_string+="<li>"+conf_sorted[x][1]
+        if the_ingrs:
+            refine_url="/refine/"+dish+"/"+the_ingrs+","+conf_sorted[x][1]+'/'
+        else:
+            refine_url="/refine/"+dish+"/"+conf_sorted[x][1]+'/'
+        return_string+="<li>"+conf_sorted[x][1] + '- <em><a href="'+refine_url+'">Refine by this ingredient</a></em>'
     return_string+="<br><br>Your worst bets are"
     for x in range(-6,-1):
         return_string+="<li>"+conf_sorted[x][1]
