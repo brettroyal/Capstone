@@ -9,7 +9,7 @@
   <div class="whatever">
 
     <h4>
-      Enter a a dish, get some science.
+      Enter a dish, get some science.
     </h4>
 
         <form id='edible' method='POST' action='/choose/' >
@@ -22,9 +22,11 @@
 </td>
 <td class="whatever">
   <div class="whatever">
-  <p>This project is concerned with identifying what I'm calling secret ingredients.  They're not secrets because nobody knows what they are, but they're secrets because you gotta try a hundred different recipes before you know which ingredients make a difference.  That's where data science comes in.</p>
-  <p>This project utilizes the Yummly API, analyzing ratings and ingredients for each recipe.  </p>
-  <p>Currently, you can search by dish, and an ingredient breakdown and discussion is provided.</p>
+  <p>This project is concerned with identifying what I'm calling secret ingredients.  They're not secrets because nobody knows what they are, but they're secrets because you gotta try a hundred different recipes before you know which ingredients make a difference.  That's where data science comes in.  By analyzing hundreds of recipes for a given dish, we can determine which ingredients have the biggest impact.</p>
+  <p>This project utilizes the Yummly API, analyzing ratings and ingredients for each recipe.  Every ingredient included for the 500 top-rated recipes for a given category are analyzed.  From here, the best ingredients are calculated by calculating the net improvement each particular ingredient adds to a recipe.  This is multiplied by a factor to control for the popularity of an ingredient, helping to de-emphasize both the ingredients that are too common and those that are too rare.</p>
+  <p>Currently, you can search by dish, and an ingredient breakdown and discussion is provided.  Each dish can be further refiend by just including the recipes that had the highest added value.</p>
+  <p>Future iterations of the project will work in the opposite direction, whereby you can search for ingredients and find those recipes where they have the biggest impact.  This can be applied for grocery shopping, menu design, and recipe discovery.  More generally, this methodology can be used to enrich the information we have by comparing the rated value of an item against its expected value, allowing for a more fine-grained analysis of the category.</p>
+  <p align="center">Recipe search powered by <a href='http://www.yummly.co/recipes'><img alt='Yummly' src='https://static.yummly.co/api-logo.png'/></a></p>
   </div>
   </td>
 </div>

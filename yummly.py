@@ -18,13 +18,7 @@ from bokeh.embed import components
 import string
 
 #######API INJFO
-app_id='fe5797c1'
-key='d5a953efaeeb4f854defde290177c340'
-auth_string='_app_id='+app_id+'&_app_key='+key
-ingr='lemon'
-recipe='key lime pie'
-recipe.replace(' ','%20')
-pp = pprint.PrettyPrinter(indent=4)
+
 ##########################
 
 # In[2]: http://api.yummly.com/v1/api/metadata/ingredient?_app_id=fe5797c1&_app_key=d5a953efaeeb4f854defde290177c340
